@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Interns from './pages/interns';
 import About from './pages/about';
-import Team from './pages/team';
 import Contact from './pages/contact';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop'; // <--- IMPORT IT HERE
+import Footer from './components/footer';
 
 const App = () => {
   return (
@@ -21,8 +21,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/interns" element={<Interns />} />
             <Route path="/about" element={<About />} />
-            <Route path="/team" element={<Team />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<h1>404 - Page Not Found</h1>} />
           </Routes>
         </main>
       </div>

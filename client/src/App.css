@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* GLOBAL MOBILE RESPONSIVENESS OVERRIDES */
+
+/* Fix the Bento Grid on Home & About */
+@media (max-width: 768px) {
+  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(300px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix the Split Contact Form */
+  div[style*="gridTemplateColumns: 1fr 2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Fix the Story Grid on About Page */
+  div[style*="gridTemplateColumns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Shrink Massive Headings for Mobile */
+  h1 {
+    line-height: 1.1 !important;
+  }
+
+  /* Adjust padding for mobile sections */
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Make horizontal scrolling product cards smaller */
+  div[style*="width: 450px"] {
+    width: 300px !important;
+  }
+}

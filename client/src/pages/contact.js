@@ -1,8 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const Contact = () => {
-  // Animation variants for staggering the entrance
+  // 1. FORM STATE
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: 'project',
+    message: ''
+  });
+
+  const [status, setStatus] = useState('Transmit Message');
+
+  // 2. SUBMIT HANDLER
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Transmitting...');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        setStatus('Message Transmitted.');
+        // Clear form after success
+        setFormData({ name: '', email: '', subject: 'project', message: '' });
+      } else {
+        setStatus('Transmission Failed.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('Server Offline.');
+    }
+  };
+
+  // 3. ANIMATION VARIANTS (These were missing!)
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -22,7 +57,7 @@ const Contact = () => {
   return (
     <div style={styles.container}>
       
-      {/* 1. KINETIC HERO SECTION */}
+      {/* KINETIC HERO SECTION */}
       <section style={styles.heroSection}>
         <motion.div 
           style={styles.heroContent}
@@ -40,7 +75,7 @@ const Contact = () => {
         </motion.div>
       </section>
 
-      {/* 2. SPLIT LAYOUT: INFO & FORM */}
+      {/* SPLIT LAYOUT: INFO & FORM */}
       <section style={styles.contactSection}>
         <motion.div 
           style={styles.splitGrid}
@@ -76,9 +111,9 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* RIGHT COLUMN: THE FORM */}
+          {/* RIGHT COLUMN: THE WIRED FORM */}
           <motion.div variants={itemVariants} style={styles.formColumn}>
-            <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
+            <form style={styles.form} onSubmit={handleSubmit}>
               
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Full Name</label>
@@ -87,6 +122,9 @@ const Contact = () => {
                   placeholder="John Doe" 
                   style={styles.input}
                   whileFocus={styles.inputFocus}
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  required
                 />
               </div>
 
@@ -97,12 +135,20 @@ const Contact = () => {
                   placeholder="john@company.com" 
                   style={styles.input}
                   whileFocus={styles.inputFocus}
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required
                 />
               </div>
 
               <div style={styles.inputGroup}>
                 <label style={styles.label}>Subject</label>
-                <motion.select style={styles.input} whileFocus={styles.inputFocus}>
+                <motion.select 
+                  style={styles.input} 
+                  whileFocus={styles.inputFocus}
+                  value={formData.subject}
+                  onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                >
                   <option value="project">New Project Inquiry</option>
                   <option value="internship">Incubator / Internship</option>
                   <option value="support">Technical Support</option>
@@ -117,6 +163,9 @@ const Contact = () => {
                   style={styles.textarea}
                   rows={6}
                   whileFocus={styles.inputFocus}
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  required
                 />
               </div>
 
@@ -126,7 +175,7 @@ const Contact = () => {
                 whileHover={{ scale: 1.02, backgroundColor: '#222' }}
                 whileTap={{ scale: 0.98 }}
               >
-                Transmit Message
+                {status}
               </motion.button>
 
             </form>
@@ -150,7 +199,6 @@ const styles = {
     minHeight: '100vh',
   },
   
-  /* 1. HERO SECTION */
   heroSection: {
     padding: '12rem 2rem 4rem 2rem',
     display: 'flex',
@@ -190,7 +238,6 @@ const styles = {
     fontWeight: '400',
   },
 
-  /* 2. SPLIT LAYOUT SECTION */
   contactSection: {
     padding: '4rem 2rem 12rem 2rem',
     maxWidth: '1200px',
@@ -198,16 +245,15 @@ const styles = {
   },
   splitGrid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr', // Left column is narrower
+    gridTemplateColumns: '1fr 2fr', 
     gap: '6rem',
   },
 
-  /* LEFT COLUMN (INFO) */
   infoColumn: {
     display: 'flex',
     flexDirection: 'column',
     gap: '3rem',
-    paddingTop: '2rem', // Aligns it slightly with the form fields
+    paddingTop: '2rem',
   },
   infoBlock: {
     display: 'flex',
@@ -228,7 +274,6 @@ const styles = {
     fontWeight: '500',
   },
 
-  /* RIGHT COLUMN (FORM) */
   formColumn: {
     backgroundColor: '#ffffff',
     padding: '4rem',
@@ -293,13 +338,6 @@ const styles = {
     cursor: 'pointer',
     marginTop: '1rem',
     width: '100%',
-  },
-
-  /* Responsive fallback for the grid */
-  '@media (max-width: 768px)': {
-    splitGrid: {
-      gridTemplateColumns: '1fr',
-    }
   }
 };
 

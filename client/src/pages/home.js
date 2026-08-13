@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   // Hero Parallax
@@ -27,7 +28,7 @@ const Home = () => {
     <div style={styles.container}>
       
       {/* 1. KINETIC HERO SECTION */}
-      <section style={styles.heroSection}>
+      <section style={{...styles.heroSection, zIndex: 1}}>
         <motion.div style={{ ...styles.heroContent, y: heroY, opacity: heroOpacity }}>
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -58,7 +59,7 @@ const Home = () => {
       </section>
 
       {/* 2. TECH STACK MARQUEE */}
-      <div style={styles.marqueeContainer}>
+      <div style={{...styles.marqueeContainer, position: 'relative', zIndex: 5}}>
         <motion.div 
           style={styles.marqueeTrack}
           animate={{ x: ["0%", "-50%"] }}
@@ -71,7 +72,8 @@ const Home = () => {
       </div>
 
       {/* 3. THE STICKY MANIFESTO */}
-      <section ref={manifestoRef} style={styles.stickyContainer}>
+      {/* Set to zIndex 10. The next section will slide OVER it. */}
+      <section ref={manifestoRef} style={{...styles.stickyContainer, zIndex: 10 }}>
         <div style={styles.stickyContent}>
           <motion.h2 
             style={{ ...styles.manifestoText, scale: textScale, filter: textBlur }}
@@ -89,8 +91,12 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Z-INDEX BUFFER (zIndex 20) TO WIPE OVER THE STICKY SECTION CLEANLY */}
+      <div style={{ height: '15vh', width: '100%', backgroundColor: '#0a0a0a', position: 'relative', zIndex: 20 }}></div>
+
       {/* 4. HORIZONTAL PRODUCT SHOWCASE */}
-      <section ref={targetRef} style={styles.horizontalScrollContainer}>
+      {/* Set to zIndex 20 so it sits above the manifesto */}
+      <section ref={targetRef} style={{...styles.horizontalScrollContainer, zIndex: 20 }}>
         <div style={styles.horizontalSticky}>
           <div style={styles.horizontalHeader}>
             <h2 style={styles.sectionTitleDark}>Flagship Deployments</h2>
@@ -98,42 +104,53 @@ const Home = () => {
           </div>
           
           <motion.div style={{ ...styles.horizontalTrack, x }}>
-            {/* Product 1 */}
-            <div style={styles.productCard}>
-              <div style={styles.productImagePlaceholder}></div>
-              <h3 style={styles.productTitle}>Omistia</h3>
-              <p style={styles.productDesc}>A next-generation e-commerce application featuring gamified checkout experiences and dynamic user retention mechanics.</p>
-            </div>
             
-            {/* Product 2 */}
-            <div style={styles.productCard}>
-              <div style={styles.productImagePlaceholder}></div>
-              <h3 style={styles.productTitle}>V-STARS</h3>
-              <p style={styles.productDesc}>An automated farm surveillance and anti-theft ecosystem bridging the gap between hardware monitoring and real-time software alerts.</p>
-            </div>
+            {/* Product 1: Seeni-Tattooz */}
+            <a href="https://seenitattooz.in" target="_blank" rel="noreferrer" style={styles.productLink}>
+              <div style={styles.productCard}>
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="Seeni-Tattooz App" style={styles.productImage} />
+                <h3 style={styles.productTitle}>Seeni-Tattooz</h3>
+                <p style={styles.productDesc}>Seeni Tattooz is a premier professional tattoo and body piercing studio located in Kuvempu Nagara, Mysuru (Mysore), Karnataka, founded and led by master artist Srinivas. Established in 2011, the studio brings over a decade of experience with a strong reputation for custom tattoo designs, realism shading, fine line art, traditional styles, and hygienic body piercings.</p>
+              </div>
+            </a>
+            
+            {/* Product 2: Bhagavathi Jwels */}
+            <a href="https://bhagavathi.vercel.com" target="_blank" rel="noreferrer" style={styles.productLink}>
+              <div style={styles.productCard}>
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="V-STARS Dashboard" style={styles.productImage} />
+                <h3 style={styles.productTitle}>Bhagavathi Jwels</h3>
+                <p style={styles.productDesc}>Bhagavathi Jewellers is a premier fine jewelry brand renowned for its masterful craftsmanship and enduring legacy of trust. The flagship showroom offers an exquisite portfolio of 100% BIS-hallmarked 22K and 24K gold, certified natural diamonds, and elegant silverware, with collections ranging from contemporary everyday wear to authentic antique temple jewelry and the exclusive bridal line, The Muhurtham Edit.</p>
+              </div>
+            </a>
 
-            {/* Product 3 */}
-            <div style={styles.productCard}>
-              <div style={styles.productImagePlaceholder}></div>
-              <h3 style={styles.productTitle}>Tattoopetals</h3>
-              <p style={styles.productDesc}>A custom-configured web platform with seamless DNS routing, designed for high-availability open market transactions.</p>
-            </div>
+            {/* Product 3: Smile Arc Dental Clinic */}
+            <a href="https://smilearcdentistry.co.in" target="_blank" rel="noreferrer" style={styles.productLink}>
+              <div style={styles.productCard}>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Tattoopetals Web" style={styles.productImage} />
+                <h3 style={styles.productTitle}>Smile Arc Dental Clinic</h3>
+                <p style={styles.productDesc}>Smile Arc Dental Clinic is a premier dental care facility located in Vijayanagar, Mysore, led by chief orthodontist Dr. Chetan G. B. The clinic provides comprehensive oral healthcare services, ranging from routine dental checkups and advanced root canal therapies to specialized orthodontic treatments and periodontal care.</p>
+              </div>
+            </a>
 
-             {/* Product 4 */}
-             <div style={styles.productCard}>
-              <div style={styles.productImagePlaceholder}></div>
-              <h3 style={styles.productTitle}>Againzt</h3>
-              <p style={styles.productDesc}>A modern digital retail platform engineered from the ground up for frictionless user experiences and rapid scaling.</p>
-            </div>
+             {/* Product 4: Againzt */}
+             <a href="https://againzt.com" target="_blank" rel="noreferrer" style={styles.productLink}>
+              <div style={styles.productCard}>
+                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=600&q=80" alt="Againzt Platform" style={styles.productImage} />
+                <h3 style={styles.productTitle}>Againzt</h3>
+                <p style={styles.productDesc}>A modern digital retail platform engineered from the ground up for frictionless user experiences and rapid scaling.</p>
+              </div>
+            </a>
+
           </motion.div>
         </div>
       </section>
 
-      {/* EXTENDS THE BLACK BACKGROUND DOWN FOR BREATHING ROOM */}
-      <div style={{ height: '250px', width: '100%', backgroundColor: '#0a0a0a' }}></div>
+      {/* EXTENDS THE BLACK BACKGROUND DOWN FOR BREATHING ROOM (zIndex 20) */}
+      <div style={{ height: '250px', width: '100%', backgroundColor: '#0a0a0a', position: 'relative', zIndex: 20 }}></div>
 
       {/* 5. ASYMMETRIC CAPABILITIES GRID */}
-      <section style={styles.capabilitiesSection}>
+      {/* Set to zIndex 30 so it smoothly slides over the end of the Flagships section */}
+      <section style={{...styles.capabilitiesSection, position: 'relative', zIndex: 30, backgroundColor: '#fcfcfc'}}>
         <div style={styles.capabilitiesHeader}>
           <h2 style={styles.sectionTitle}>The Arsenal</h2>
         </div>
@@ -186,8 +203,34 @@ const Home = () => {
         </div>
       </section>
 
+      {/* 5.5 MINI TEAM SECTION */}
+      <section style={{...styles.miniTeamSection, position: 'relative', zIndex: 30, backgroundColor: '#fcfcfc'}}>
+        <div style={styles.teamHeader}>
+          <h2 style={styles.sectionTitle}>The Mind Trust</h2>
+          <p style={styles.teamSubtext}>Engineered by experts. Executed with precision.</p>
+        </div>
+        <div style={styles.teamGrid}>
+          {/* Quick highlight of the founders/leads */}
+          <div style={styles.miniTeamCard}>
+            <div style={styles.miniAvatar}>P</div>
+            <h4>Prajwal K R</h4>
+            <p>?</p>
+          </div>
+          <div style={styles.miniTeamCard}>
+            <div style={styles.miniAvatar}>C</div>
+            <h4>Chetan Sharma P</h4>
+            <p>?</p>
+          </div>
+          <div style={styles.miniTeamCard}>
+            <div style={styles.miniAvatar}>H</div>
+            <h4>Harshit S</h4>
+            <p>?</p>
+          </div>
+        </div>
+      </section>
+
       {/* 6. MASSIVE CLOSING CTA */}
-      <section style={styles.finalSection}>
+      <section style={{...styles.finalSection, position: 'relative', zIndex: 30, backgroundColor: '#fcfcfc'}}>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -201,6 +244,44 @@ const Home = () => {
           </button>
         </motion.div>
       </section>
+
+      {/* 7. RE-ENGINEERED FOOTER */}
+      <footer style={{...styles.footer, position: 'relative', zIndex: 40}}>
+        
+        {/* TOP HALF: THE CALLOUT */}
+        <div style={styles.footerTopSection}>
+          <h2 style={styles.footerCallout}>Ready to defy <br/> the standard?</h2>
+          <a href="mailto:sharmachetan7816@gmail.com" style={styles.emailPill}>
+            sharmachetan7816@gmail.com ✦
+          </a>
+        </div>
+
+        {/* BOTTOM HALF: THE DIRECTORY */}
+        <div style={styles.footerGrid}>
+          <div style={styles.brandCol}>
+            <h2 style={styles.footerLogo}>WECOVE</h2>
+            <p style={styles.footerTagline}>Engineered in Mysuru. Deployed globally.</p>
+          </div>
+          
+          <div style={styles.linkCol}>
+            <h4 style={styles.colTitle}>Platform</h4>
+            <Link to="/" style={styles.footerLink}>Home</Link>
+            <Link to="/about" style={styles.footerLink}>Origin</Link>
+            <Link to="/team" style={styles.footerLink}>Mind Trust</Link>
+          </div>
+
+          <div style={styles.linkCol}>
+            <h4 style={styles.colTitle}>Engage</h4>
+            <Link to="/contact" style={styles.footerLink}>Inquiries</Link>
+            <Link to="/interns" style={styles.footerLink}>Incubator</Link>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={styles.footerLink}>LinkedIn</a>
+          </div>
+        </div>
+
+        <div style={styles.bottomBar}>
+          <p>© {new Date().getFullYear()} Wecove Engineering. All rights reserved.</p>
+        </div>
+      </footer>
 
     </div>
   );
@@ -351,12 +432,14 @@ const styles = {
     height: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: '6rem',           // <--- Reduced to safely clear the navbar without pushing too far
+    paddingLeft: '4rem',
+    paddingRight: '4rem',
     overflow: 'hidden',
-    padding: '0 4rem',
   },
   horizontalHeader: {
-    marginBottom: '4rem',
+    marginBottom: '2rem',         // <--- Reduced from 4rem to save vertical space
   },
   sectionTitleDark: {
     fontSize: '3.5rem',
@@ -374,11 +457,27 @@ const styles = {
     gap: '3rem',
     width: 'max-content',
   },
+  productLink: {
+    textDecoration: 'none',
+    color: 'inherit',
+    display: 'block',
+    transition: 'transform 0.3s ease',
+  },
   productCard: {
-    width: '450px',
+    width: '400px',               // <--- Slightly narrower
     backgroundColor: '#111',
     borderRadius: '24px',
-    padding: '2rem',
+    padding: '1.5rem',            // <--- Reduced padding inside the card
+    border: '1px solid #222',
+    transition: 'border-color 0.3s ease, transform 0.3s ease',
+    cursor: 'pointer',
+  },
+  productImage: {
+    width: '100%',
+    height: '160px',              // <--- Shrunk the image height so the text fits on laptop screens
+    objectFit: 'cover', 
+    borderRadius: '16px',
+    marginBottom: '1rem',         // <--- Reduced margin
     border: '1px solid #222',
   },
   productImagePlaceholder: {
@@ -389,15 +488,15 @@ const styles = {
     marginBottom: '2rem',
   },
   productTitle: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',           // <--- Slightly scaled down
     color: '#fcfcfc',
-    marginBottom: '1rem',
+    marginBottom: '0.5rem',
     fontWeight: '700',
   },
   productDesc: {
-    fontSize: '1.1rem',
+    fontSize: '0.95rem',          // <--- Slightly scaled down text
     color: '#aaa',
-    lineHeight: '1.5',
+    lineHeight: '1.4',
   },
 
   /* 5. BENTO GRID CAPABILITIES */
@@ -467,7 +566,7 @@ const styles = {
 
   /* 6. FINAL CTA */
   finalSection: {
-    padding: '10rem 2rem 15rem 2rem',
+    padding: '1rem 2rem 5rem 2rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -493,6 +592,126 @@ const styles = {
     cursor: 'pointer',
     transition: 'all 0.3s ease',
     boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+  },
+  miniTeamSection: {
+    padding: '1rem 2rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    textAlign: 'center',
+  },
+  teamHeader: { marginBottom: '2rem' },
+  teamSubtext: { color: '#666', fontSize: '1.2rem', marginTop: '1rem' },
+  teamGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '3rem',
+  },
+  miniTeamCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '1rem',
+  },
+  miniAvatar: {
+    width: '120px',
+    height: '120px',
+    backgroundColor: '#050505',
+    color: '#fcfcfc',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '3rem',
+    fontWeight: '800',
+  },
+  /* 7. RE-ENGINEERED FOOTER STYLES */
+  footer: {
+    backgroundColor: '#050505',
+    color: '#fcfcfc',
+    padding: '8rem 2rem 2rem 2rem',
+    borderTopLeftRadius: '48px',
+    borderTopRightRadius: '48px',
+  },
+  footerTopSection: {
+    maxWidth: '1200px',
+    margin: '0 auto 6rem auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '3rem',
+    borderBottom: '1px solid #222',
+    paddingBottom: '6rem',
+  },
+  footerCallout: {
+    fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+    fontWeight: '800',
+    letterSpacing: '-0.03em',
+    lineHeight: '1.1',
+    margin: 0,
+    color: '#fcfcfc',
+  },
+  emailPill: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '1rem',
+    padding: '1.25rem 2.5rem',
+    backgroundColor: '#fcfcfc',
+    color: '#050505',
+    borderRadius: '100px',
+    textDecoration: 'none', // Kills the default blue underline
+    fontSize: '1.25rem',
+    fontWeight: '700',
+    transition: 'transform 0.3s ease',
+  },
+  footerGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '4rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    paddingBottom: '4rem',
+  },
+  brandCol: {
+    flex: '2 1 300px',
+  },
+  footerLogo: {
+    fontSize: '2rem',
+    fontWeight: '800',
+    letterSpacing: '2px',
+    marginBottom: '1rem',
+    color: '#fcfcfc',
+  },
+  footerTagline: {
+    color: '#888',
+    fontSize: '1.1rem',
+    maxWidth: '300px',
+    lineHeight: '1.5',
+  },
+  linkCol: {
+    flex: '1 1 150px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+  },
+  colTitle: {
+    fontSize: '1.1rem',
+    fontWeight: '700',
+    marginBottom: '0.5rem',
+    color: '#fcfcfc',
+  },
+  footerLink: {
+    color: '#aaa',
+    textDecoration: 'none',
+    transition: 'color 0.2s',
+    fontSize: '0.95rem',
+  },
+  bottomBar: {
+    textAlign: 'center',
+    paddingTop: '2rem',
+    color: '#555',
+    fontSize: '0.9rem',
+    borderTop: '1px solid #111',
   }
 };
 
