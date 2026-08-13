@@ -1,13 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import Home from './pages/home';
 import Interns from './pages/interns';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop'; // <--- IMPORT IT HERE
-import Footer from './components/footer';
 
 const App = () => {
   return (
